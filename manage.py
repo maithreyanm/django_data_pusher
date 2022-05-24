@@ -25,4 +25,6 @@ if __name__ == '__main__':
 # python manage.py makemigrations data_push
 # python manage.py migrate
 # https://www.talentica.com/blogs/building-a-basic-rest-api-using-django-rest-framework/
+# https://books.agiliq.com/projects/django-orm-cookbook/en/latest/one_to_many.html
+# https://www.dev2qa.com/how-to-enable-or-disable-csrf-validation-in-django-web-application/
 

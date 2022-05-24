@@ -18,7 +18,7 @@ class HttpChoice(enum.Enum):
 
 class Account(models.Model):
     objects = None
-    pid = models.IntegerField(primary_key=True)
+    pid = models.BigAutoField(primary_key=True)
     account_id = models.CharField(max_length=30)
     account_name = models.CharField(max_length=30)
     app_secret = models.CharField(max_length=30)
@@ -29,12 +29,12 @@ class Account(models.Model):
 
 
 class Destination(models.Model):
+    objects = None
     acc_key = models.ForeignKey(Account, on_delete=models.CASCADE)
-    pid = models.IntegerField(primary_key=True)
-    # acc_key = models.IntegerField(primary_key=True)
+    pid = models.BigAutoField(primary_key=True)
     url = models.CharField(max_length=30)
     http_method = models.CharField(max_length=10, choices=[(choice, choice.value) for choice in HttpChoice])
-    headers = models.CharField(max_length=30)
+    headers = models.JSONField()
 
     def __repr__(self):
         return "<Destination %s>" % self.pid
