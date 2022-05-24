@@ -24,3 +24,10 @@
 #     "account_id":"abcmaith1234",
 #     "account_name":"hhhh"
 # }'
+
+
+# curl --location --request DELETE 'http://127.0.0.1:8000/account_details/delete_account_data' \
+# --header 'Content-Type: application/json' \
+# --data-raw '{
+#     "account_id":"abcmaith1234"
+# }'
