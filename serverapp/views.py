@@ -10,9 +10,9 @@ from serverapp.services import WebHookProcess
 
 class Server(View):
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         try:
-            app_secret = request.json.get('app_secret')
+            app_secret = request.headers.get('CL-X-TOKEN')
             if not app_secret:
                 return HttpResponse('Unauthorized', status=401)
             account_ent = Account.objects.get(app_secret=app_secret)
