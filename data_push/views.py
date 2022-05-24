@@ -31,3 +31,10 @@ class AccountView(View):
             return HttpResponse(f'udpated account for account_id: {account_id}', status=200)
         except Exception as e:
             return HttpResponse('INTERNAL SERVER ERROR', status=500)
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            account_id = json.loads(request.body.decode('utf-8')).get('account_id')
+            response = AccountSync.delete_account_data(account_id)
+        except Exception as e:
+            return HttpResponse('INTERNAL SERVER ERROR', status=500)

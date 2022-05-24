@@ -54,3 +54,11 @@ class AccountSync:
                 account_ent.save()
         except Exception as e:
             raise e
+
+    @classmethod
+    def delete_account_data(cls, account_id):
+        try:
+            account_ent = Account.objects.filter(account_id=account_id)[0]
+            account_ent.delete()
+        except Exception as e:
+            raise e
