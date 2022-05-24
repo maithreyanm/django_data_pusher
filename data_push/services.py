@@ -70,3 +70,33 @@ class AccountSync:
                 return False
         except Exception as e:
             raise e
+
+
+class DestinationSync:
+
+    @classmethod
+    def get_destination_data(cls, destination_entities):
+        try:
+            destination_list = []
+            if len(destination_entities) > 0:
+                for destination in destination_entities:
+                    destination_response = {
+                        'url': destination.url,
+                        'http_method': destination.http_method,
+                        'headers': destination.headers
+                    }
+                    destination_list.append(destination_response)
+            return destination_list
+        except Exception as e:
+            raise e
+
+    @classmethod
+    def save_destination_data(cls, account_ent, data):
+        try:
+            destinations = data['destinations']
+            for destination in destinations:
+                destination = Destination(url=destination['url'], http_method=destination['http_method'],
+                                          headers=destination['headers'], acc_key=account_ent)
+                destination.save()
+        except Exception as e:
+            raise e

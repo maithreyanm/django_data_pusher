@@ -1,5 +1,5 @@
-# curl --location --request GET 'http://127.0.0.1:8000/account_details/get_account_data?account_id=abc1234'
-# curl --location --request POST 'http://127.0.0.1:8000/account_details/save_account_data' \
+# curl --location --request GET 'http://127.0.0.1:8000/data_handler/get_account_data?account_id=abc1234'
+# curl --location --request POST 'http://127.0.0.1:8000/data_handler/save_account_data' \
 # --header 'X-CSRFToken: aa' \
 # --header 'Content-Type: application/json' \
 # --data-raw '{
@@ -18,7 +18,7 @@
 # }'
 
 
-# curl --location --request PATCH 'http://127.0.0.1:8000/account_details/update_account_data' \
+# curl --location --request PATCH 'http://127.0.0.1:8000/data_handler/update_account_data' \
 # --header 'Content-Type: application/json' \
 # --data-raw '{
 #     "account_id":"abcmaith1234",
@@ -26,7 +26,7 @@
 # }'
 
 
-# curl --location --request DELETE 'http://127.0.0.1:8000/account_details/delete_account_data' \
+# curl --location --request DELETE 'http://127.0.0.1:8000/data_handler/delete_account_data' \
 # --header 'Content-Type: application/json' \
 # --data-raw '{
 #     "account_id":"abcmaith1234"
