@@ -17,11 +17,17 @@ class AccountView(View):
 
     def post(self, request, *args, **kwargs):
         try:
-            print(request)
             data = json.loads(request.body.decode('utf-8'))
-            response = AccountSync.save_account_data(data)
+            response_dict = AccountSync.save_account_data(data)
+            return JsonResponse(response_dict, status=200)
+        except Exception as e:
             return HttpResponse('INTERNAL SERVER ERROR', status=500)
-            # response = AccountSync.get_account_data(request.POST.get('account_id'))
-            # return JsonResponse(response, status=200)
+
+    def patch(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            account_id = data['account_id']
+            response = AccountSync.update_account_data(data)
+            return HttpResponse(f'udpated account for account_id: {account_id}', status=200)
         except Exception as e:
             return HttpResponse('INTERNAL SERVER ERROR', status=500)

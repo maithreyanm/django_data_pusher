@@ -32,8 +32,25 @@ class AccountSync:
             account_ent = Account(account_name=data['account_name'], account_id=data['account_id'],
                                   app_secret=data['app_secret'], website=data['website'])
             account_ent.save()
-            for destination in data['destinations']:
-                destination = Destination(url=destination['url'], http_method=destination['http_method'], headers=destination['headers'])
-            destination.save()
+            if data.get('destinations'):
+                for destination in data['destinations']:
+                    destination = Destination(url=destination['url'], http_method=destination['http_method'],
+                                              headers=destination['headers'], acc_key=account_ent)
+                    destination.save()
+            else:
+                pass
+            return {'account_id': account_ent.pid}
+
+        except Exception as e:
+            raise e
+
+    @classmethod
+    def update_account_data(cls, to_be_updated_data):
+        try:
+            account_ent = Account.objects.filter(account_id=to_be_updated_data['account_id'])[0]
+            to_be_updated_data.pop('account_id')
+            for k, v in to_be_updated_data.items():
+                exec(f"account_ent.{k}=\'{v}\'")
+                account_ent.save()
         except Exception as e:
             raise e

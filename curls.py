@@ -18,9 +18,9 @@
 # }'
 
 
-
-# export SECRET_KEY="django-insecure-iho2$zn66aetx*u1-v553k*i^+t33@t(kv)zd1z$c(m+idl61u"
-# export db_name=data_pusher
-# export db_user=root
-# export db_password=password
-# export db_host=localhost
+# curl --location --request PATCH 'http://127.0.0.1:8000/account_details/update_account_data' \
+# --header 'Content-Type: application/json' \
+# --data-raw '{
+#     "account_id":"abcmaith1234",
+#     "account_name":"hhhh"
+# }'
