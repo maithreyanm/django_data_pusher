@@ -49,9 +49,13 @@ class AccountSync:
         try:
             account_ent = Account.objects.filter(account_id=to_be_updated_data['account_id'])[0]
             to_be_updated_data.pop('account_id')
-            for k, v in to_be_updated_data.items():
-                exec(f"account_ent.{k}=\'{v}\'")
-                account_ent.save()
+            if account_ent:
+                for k, v in to_be_updated_data.items():
+                    exec(f"account_ent.{k}=\'{v}\'")
+                    account_ent.save()
+                    return True
+            else:
+                return False
         except Exception as e:
             raise e
 
@@ -59,6 +63,10 @@ class AccountSync:
     def delete_account_data(cls, account_id):
         try:
             account_ent = Account.objects.filter(account_id=account_id)[0]
-            account_ent.delete()
+            if account_ent:
+                account_ent.delete()
+                return True
+            else:
+                return False
         except Exception as e:
             raise e

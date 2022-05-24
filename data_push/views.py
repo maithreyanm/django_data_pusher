@@ -27,14 +27,21 @@ class AccountView(View):
         try:
             data = json.loads(request.body.decode('utf-8'))
             account_id = data['account_id']
-            response = AccountSync.update_account_data(data)
-            return HttpResponse(f'udpated account for account_id: {account_id}', status=200)
+            isUpdated = AccountSync.update_account_data(data)
+            if isUpdated:
+                return HttpResponse(f'udpated account for account_id: {account_id}', status=200)
+            else:
+                return HttpResponse(f'account for account_id: {account_id} not found', status=404)
         except Exception as e:
             return HttpResponse('INTERNAL SERVER ERROR', status=500)
 
     def delete(self, request, *args, **kwargs):
         try:
             account_id = json.loads(request.body.decode('utf-8')).get('account_id')
-            response = AccountSync.delete_account_data(account_id)
+            is_deleted = AccountSync.delete_account_data(account_id)
+            if is_deleted:
+                return HttpResponse(f'deleted account for account_id: {account_id}', status=200)
+            else:
+                return HttpResponse('record not found or already deleted', 404)
         except Exception as e:
             return HttpResponse('INTERNAL SERVER ERROR', status=500)
