@@ -20,6 +20,12 @@ class AccountView(View):
     def post(self, request, *args, **kwargs):
         try:
             data = json.loads(request.body.decode('utf-8'))
+            account_ent_email = Account.objects.all().filter(email=data['email'])
+            account_ent_id = Account.objects.all().filter(account_id=data['account_id'])
+            if len(account_ent_email) !=0:
+                return HttpResponse(f'account already exists with email: {data["email"]}', status=500)
+            if len(account_ent_id) != 0:
+                return HttpResponse(f'account already exists with acc id: {data["account_id"]}', status=500)
             response_dict = AccountSync.save_account_data(data)
             return JsonResponse(response_dict, status=200)
         except Exception as e:

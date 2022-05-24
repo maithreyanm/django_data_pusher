@@ -1,4 +1,6 @@
-from data_push.models import Account, Destination
+import uuid
+
+from data_push.models import Account, Destination, HttpChoice
 
 
 class AccountSync:
@@ -30,12 +32,20 @@ class AccountSync:
     def save_account_data(cls, data):
         try:
             account_ent = Account(account_name=data['account_name'], account_id=data['account_id'],
-                                  app_secret=data['app_secret'], website=data['website'])
+                                  app_secret=uuid.uuid4().hex, website=data['website'], email=data['email'])
             account_ent.save()
             if data.get('destinations'):
                 for destination in data['destinations']:
+                    headers_dict = {
+                        "app_id": data['account_id'],
+                        "app_secret": account_ent.app_secret,
+                        "action": "user.create",
+                        "Content-Type": "application/json",
+                        "Accept":"*"
+
+                    }
                     destination = Destination(url=destination['url'], http_method=destination['http_method'],
-                                              headers=destination['headers'], acc_key=account_ent)
+                                              headers=headers_dict, acc_key=account_ent)
                     destination.save()
             else:
                 pass
