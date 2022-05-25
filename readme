@@ -1,0 +1,27 @@
+# db migrations
+
+# python manage.py makemigrations data_push
+# python manage.py migrate
+
+# curl commands
+search for curls.py
+
+# postman collection
+search for dango.postman_collections.json
+
+# env template
+export SECRET_KEY='some_random_stirng'
+export db_name=data_pusher
+export db_user=root
+export db_password=password
+export db_host=localhost
+
+# to create venv
+python3 -m venv django
+source django/bin/activate
+
+# install requirements
+pip install -r requirements.txt
+
+# run server
+python manage.py runserver

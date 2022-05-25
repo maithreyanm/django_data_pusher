@@ -1,9 +1,14 @@
 asgiref==3.5.2
 backports.zoneinfo==0.2.1
+certifi==2022.5.18.1
+charset-normalizer==2.0.12
 configparser==5.2.0
 Django==4.0.4
 djangorestframework==3.13.1
+idna==3.3
 mysqlclient==2.0.3
 PyMySQL==1.0.2
 pytz==2022.1
+requests==2.27.1
 sqlparse==0.4.2
+urllib3==1.26.9
