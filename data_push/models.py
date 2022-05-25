@@ -33,7 +33,7 @@ class Destination(models.Model):
     objects = None
     acc_key = models.ForeignKey(Account, on_delete=models.CASCADE)
     pid = models.BigAutoField(primary_key=True)
-    url = models.CharField(max_length=30)
+    url = models.CharField(max_length=100)
     http_method = models.CharField(choices=HttpChoice.choices, max_length=10)
     headers = models.JSONField()
 

@@ -12,7 +12,7 @@ from django.views import View
 class AccountView(View):
     def get(self, request, *args, **kwargs):
         try:
-            response = AccountSync.get_account_data(request.GET.get('account_id'))
+            response = AccountSync.get_account_data(request.GET.get('email'))
             return JsonResponse(response, status=200)
         except Exception as e:
             return HttpResponse('INTERNAL SERVER ERROR', status=500)
@@ -22,7 +22,7 @@ class AccountView(View):
             data = json.loads(request.body.decode('utf-8'))
             account_ent_email = Account.objects.all().filter(email=data['email'])
             account_ent_id = Account.objects.all().filter(account_id=data['account_id'])
-            if len(account_ent_email) !=0:
+            if len(account_ent_email) != 0:
                 return HttpResponse(f'account already exists with email: {data["email"]}', status=500)
             if len(account_ent_id) != 0:
                 return HttpResponse(f'account already exists with acc id: {data["account_id"]}', status=500)
@@ -34,21 +34,21 @@ class AccountView(View):
     def patch(self, request, *args, **kwargs):
         try:
             data = json.loads(request.body.decode('utf-8'))
-            account_id = data['account_id']
+            email = data['email']
             isUpdated = AccountSync.update_account_data(data)
             if isUpdated:
-                return HttpResponse(f'udpated account for account_id: {account_id}', status=200)
+                return HttpResponse(f'udpated account for email: {email}', status=200)
             else:
-                return HttpResponse(f'account for account_id: {account_id} not found', status=404)
+                return HttpResponse(f'account for email: {email} not found', status=404)
         except Exception as e:
             return HttpResponse('INTERNAL SERVER ERROR', status=500)
 
     def delete(self, request, *args, **kwargs):
         try:
-            account_id = json.loads(request.body.decode('utf-8')).get('account_id')
-            is_deleted = AccountSync.delete_account_data(account_id)
+            email = json.loads(request.body.decode('utf-8')).get('email')
+            is_deleted = AccountSync.delete_account_data(email)
             if is_deleted:
-                return HttpResponse(f'deleted account for account_id: {account_id}', status=200)
+                return HttpResponse(f'deleted account for email: {email}', status=200)
             else:
                 return HttpResponse('record not found or already deleted', 404)
         except Exception as e:
@@ -71,10 +71,21 @@ class DestinationView(View):
     def post(self, request, *args, **kwargs):
         try:
             data = json.loads(request.body.decode('utf-8'))
-            account_ent = Account.objects.get(account_id=data['account_id'])
+            account_ent = Account.objects.all().filter(email=data['email'])
             if not account_ent:
                 return HttpResponse(f'cannot save destination due to unavailability of account', 404)
             DestinationSync.save_destination_data(account_ent, data)
             return HttpResponse(f'saved destination data against account: {data["account_id"]}', 201)
+        except Exception as e:
+            return HttpResponse('INTERNAL SERVER ERROR', status=500)
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            email = json.loads(request.body.decode('utf-8')).get('email')
+            is_deleted = DestinationSync.delete_destination_data(email)
+            if is_deleted:
+                return HttpResponse(f'deleted destination for email: {email}', status=200)
+            else:
+                return HttpResponse('record not found or already deleted', 404)
         except Exception as e:
             return HttpResponse('INTERNAL SERVER ERROR', status=500)

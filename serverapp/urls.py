@@ -3,5 +3,5 @@ from . import views
 
 
 urlpatterns = [
-    path('incoming_data', views.Server.as_view(), name='incoming_data'),
+    path('incoming_data', views.json_handling, name='incoming_data'),
 ]

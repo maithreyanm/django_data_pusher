@@ -8,7 +8,7 @@ class AccountSync:
     @classmethod
     def get_account_data(cls, account_id):
         try:
-            account_ent = Account.objects.get(account_id=account_id)
+            account_ent = Account.objects.get(email=account_id)
             destination_entities = Destination.objects.all().filter(acc_key=account_ent.pid)
             destination_list = []
             for destination in destination_entities:
@@ -57,8 +57,8 @@ class AccountSync:
     @classmethod
     def update_account_data(cls, to_be_updated_data):
         try:
-            account_ent = Account.objects.filter(account_id=to_be_updated_data['account_id'])[0]
-            to_be_updated_data.pop('account_id')
+            account_ent = Account.objects.filter(email=to_be_updated_data['email'])[0]
+            to_be_updated_data.pop('email')
             if account_ent:
                 for k, v in to_be_updated_data.items():
                     exec(f"account_ent.{k}=\'{v}\'")
@@ -70,9 +70,9 @@ class AccountSync:
             raise e
 
     @classmethod
-    def delete_account_data(cls, account_id):
+    def delete_account_data(cls, email):
         try:
-            account_ent = Account.objects.filter(account_id=account_id)[0]
+            account_ent = Account.objects.filter(email=email)[0]
             if account_ent:
                 account_ent.delete()
                 return True
@@ -105,8 +105,30 @@ class DestinationSync:
         try:
             destinations = data['destinations']
             for destination in destinations:
+                headers_dict = {
+                    "app_id": data['account_id'],
+                    "app_secret": account_ent.app_secret,
+                    "action": "user.create",
+                    "Content-Type": "application/json",
+                    "Accept": "*"
+
+                }
                 destination = Destination(url=destination['url'], http_method=destination['http_method'],
-                                          headers=destination['headers'], acc_key=account_ent)
+                                          headers=headers_dict, acc_key=account_ent)
                 destination.save()
+        except Exception as e:
+            raise e
+
+    @classmethod
+    def delete_destination_data(cls, email):
+        try:
+            account_ent = Account.objects.filter(email=email)[0]
+            destination_entities = Destination.objects.all().filter(acc_key=account_ent.pid)
+            if len(destination_entities) !=0:
+                for destination in destination_entities:
+                    destination.delete()
+                return True
+            else:
+                return False
         except Exception as e:
             raise e
