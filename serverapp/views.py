@@ -14,7 +14,7 @@ from rest_framework.decorators import api_view
 # class Server(View):
 
 @api_view(['GET', 'POST'])
-def json_handling(request):
+def incoming_data(request):
     try:
         if request.method == 'GET' or type(request.data) is not dict:
             response_json = {'message': 'invalid_data'}
