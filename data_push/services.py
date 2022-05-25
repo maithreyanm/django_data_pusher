@@ -49,7 +49,7 @@ class AccountSync:
                     destination.save()
             else:
                 pass
-            return {'account_id': account_ent.pid}
+            return {'account_id': account_ent.pid, 'app_secret': account_ent.app_secret}
 
         except Exception as e:
             raise e
